@@ -17,7 +17,7 @@ async function readingFileAndSaving(){
 
         const results = await page.evaluate(()=>{
             const content = document.querySelectorAll('.thumb__img')
-        const data = [...content].map(con=>{
+            const data = [...content].map(con=>{
             const source = con.getAttribute('src')
             return source
         })
@@ -40,18 +40,35 @@ await browser.close()
 
 // readingFileAndSaving()
 
+
+// Obtenemos el numero total de paginas de cada modelo
 async function getAllList(){
     const browser =  await puppeteer.launch({
         headless:false,
       })
     // New instance of BROWSER (not the current in use)
     const page = await browser.newPage()  
-    await page.goto('https://www.twpornstars.com/JennaLynnMeowri')  
+    await page.goto('https://www.twpornstars.com/hime_tsu')  
     const results = await page.evaluate(()=>{
         const list = document.querySelectorAll('.pagination li')
-       return list
+        const data = [...list].map(async(li,index, arr)=>{
+            if (index === arr.length - 2){
+              await page.goto(`https://www.twpornstars.com/hime_tsu?page=${li.innerText}`) 
+              const newResults = await page.evaluate(()=>{
+                const content = document.querySelectorAll('.thumb__img')
+                const data = [...content].map(con=>{
+                    const source = con.getAttribute('src')
+                    return source
+                })
+                return data
+              })
+              console.log(newResults)
+            }
+          
+        })
+       return data
     })
-    console.log(results)
+   // console.log(results)
     await browser.close()
 }
 
