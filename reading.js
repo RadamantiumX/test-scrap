@@ -7,8 +7,8 @@ async function readingFileAndSaving(){
         headless:false,
       })
       // New instance of BROWSER (not the current in use)
-      const page = await browser.newPage()
-    const read = fs.readFileSync('./links-to-album-1.json')
+    const page = await browser.newPage()
+    const read = fs.readFileSync('./links-1.json')
     const parseData = await JSON.parse(read)
    
     for (let i = 1; i < 2;i++){
@@ -30,7 +30,7 @@ async function readingFileAndSaving(){
         }else{
             console.log('Data is saved!')
         }
-    })*/
+       })*/
 
         arrayPage.push(results)
      }   
@@ -48,7 +48,7 @@ console.log(arrayPage)
 await browser.close()
 }
 
-readingFileAndSaving()
+// readingFileAndSaving()
 
 
 // Obtenemos el numero total de paginas de cada modelo
@@ -60,24 +60,38 @@ async function getAllList(){
 
     // New instance of BROWSER (not the current in use)
     const page = await browser.newPage()
-    const read = fs.readFileSync('./links-to-album-1.json')
-    const parseData = await JSON.parse(read)  
-    await page.goto('https://www.twpornstars.com/hime_tsu')  
-    const results = await page.evaluate(()=>{
-        const list = document.querySelectorAll('.pagination li')
-        const data = [...list].map((li,index, arr)=>{
+    const read = fs.readFileSync('./links-1-test.json')
+    const parseData = await JSON.parse(read)
+    for(let i = 0; i <= 1; i++){
+        for(let y = 0; y < parseData[i].length; y++){
+            await page.goto(parseData[i][y].url) 
+
+            const results = await page.evaluate(()=>{
+            const innerArray = []    
+            const list = document.querySelectorAll('.pagination li')
+            const data = [...list].map((li,index, arr)=>{
 
             if (index === arr.length - 2){
-               return `the last page is: ${li.innerText}`
+            innerArray.push(li.innerText === undefined ? 1 : li.innerText) 
+          
             }
 
-            
-          return 
         })
-       return data
+        return innerArray[0]
     })
-   console.log(results)
+    parseData[i][y].pages = results
+
+    fs.writeFile('./link-1-test.json', JSON.stringify(parseData), err =>{
+        if(err) throw new err
+
+        console.log('Data Added')
+    })
+        }
+    }
+   
+    
+    
     await browser.close()
 }
 
-// getAllList()
+getAllList()
