@@ -67,11 +67,12 @@ async function getAllList(){
             await page.goto(parseData[i][y].url) 
 
             const results = await page.evaluate(()=>{
-            const innerArray = []    
+            const innerArray = []   // Array de paginas 
             const list = document.querySelectorAll('.pagination li')
             const data = [...list].map((li,index, arr)=>{
 
             if (index === arr.length - 2){
+              // Separamos el numero de paginas en el array  
             innerArray.push(li.innerText === undefined ? 1 : li.innerText) 
           
             }
@@ -79,8 +80,9 @@ async function getAllList(){
         })
         return innerArray[0]
     })
+    // Creamos una nueva "key" en el objeto del JSON
     parseData[i][y].pages = results
-
+    // Creamos el archivo
     fs.writeFile('./link-1-test.json', JSON.stringify(parseData), err =>{
         if(err) throw new err
 
