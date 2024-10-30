@@ -60,9 +60,9 @@ async function getAllList(){
 
     // New instance of BROWSER (not the current in use)
     const page = await browser.newPage()
-    const read = fs.readFileSync('./links-1-test.json')
+    const read = fs.readFileSync('./links-1.json')
     const parseData = await JSON.parse(read)
-    for(let i = 0; i <= 1; i++){
+    for(let i = 0; i <= parseData.length; i++){
         for(let y = 0; y < parseData[i].length; y++){
             await page.goto(parseData[i][y].url) 
 
@@ -83,7 +83,7 @@ async function getAllList(){
     // Creamos una nueva "key" en el objeto del JSON
     parseData[i][y].pages = results
     // Creamos el archivo
-    fs.writeFile('./link-1-test.json', JSON.stringify(parseData), err =>{
+    fs.writeFile('./links-page-1.json', JSON.stringify(parseData), err =>{
         if(err) throw new err
 
         console.log('Data Added')
