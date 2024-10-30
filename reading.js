@@ -57,23 +57,23 @@ async function getAllList(){
         headless:false,
       })
 
-
+    const outerArray = []
     // New instance of BROWSER (not the current in use)
     const page = await browser.newPage()
-    const read = fs.readFileSync('./links-1.json')
+    const read = fs.readFileSync('./flat-links-1.json')
     const parseData = await JSON.parse(read)
-    for(let i = 0; i <= parseData.length; i++){
-        for(let y = 0; y < parseData[i].length; y++){
-            await page.goto(parseData[i][y].url) 
+    for(let i = 0; i < 300; i++){
+       
+            await page.goto(parseData[i].url) 
 
             const results = await page.evaluate(()=>{
             const innerArray = []   // Array de paginas 
-            const list = document.querySelectorAll('.pagination li')
+            const list =  document.querySelectorAll('.pagination li')
             const data = [...list].map((li,index, arr)=>{
 
             if (index === arr.length - 2){
               // Separamos el numero de paginas en el array  
-            innerArray.push(li.innerText === undefined ? 1 : li.innerText) 
+              innerArray.push(li.innerText) 
           
             }
 
@@ -81,19 +81,21 @@ async function getAllList(){
         return innerArray[0]
     })
     // Creamos una nueva "key" en el objeto del JSON
-    parseData[i][y].pages = results
+    // parseData[i].pages = results
     // Creamos el archivo
-    fs.writeFile('./links-page-1.json', JSON.stringify(parseData), err =>{
+    
+    outerArray.push(results)    
+    }
+     
+    fs.writeFile('./links-1-pages.json', JSON.stringify(outerArray), err =>{
         if(err) throw new err
 
-        console.log('Data Added')
+        console.log(`Data page added`)
     })
-        }
-    }
-   
-    
     
     await browser.close()
 }
 
 getAllList()
+
+// Last index with pages: https://www.twpornstars.com/Blockstreamcs
