@@ -16,10 +16,12 @@ async function getAllData() {
 
 
     const results = await page.evaluate(() => {
-      const list = document.querySelectorAll(".thumb__model_link a");
+      const list = document.querySelectorAll(".thumb__img");
       const data = [...list].map(li => {
-        const name = li.innerText;
-        return name;
+        // const name = li.innerText; // Model name 
+        // return name; 
+        const thumb = li.getAttribute('src')
+        return thumb
       });
       return data;
     });
@@ -31,7 +33,7 @@ async function getAllData() {
   const flatArray = outerArray.flat()
   // console.log(outerArray.flat())
   // Creamos el archivo
-   fs.writeFile('./models-name-1.json', JSON.stringify(flatArray), err =>{
+   fs.writeFile('./models-thumb-1.json', JSON.stringify(flatArray), err =>{
         if(err) throw new err
 
         console.log(`Data added`)
@@ -41,3 +43,6 @@ async function getAllData() {
 }
 
 getAllData();
+
+// .thumb__model_link a  --> Model name
+// .thumb__img --> Model Thumb image
