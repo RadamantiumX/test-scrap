@@ -1,6 +1,7 @@
 import fs from 'fs'
 import puppeteer from 'puppeteer'
 
+// Obtenemos los enlaces a cada modelo y su galeria de imágnes y videos
 async function readingFileAndSaving(){
     const arrayPage = []
     const browser =  await puppeteer.launch({
@@ -62,7 +63,7 @@ async function getAllList(){
     const page = await browser.newPage()
     const read = fs.readFileSync('./flat-links-1.json')
     const parseData = await JSON.parse(read)
-    for(let i = 0; i < 300; i++){
+    for(let i = 0; i < 600; i++){
        
             await page.goto(parseData[i].url) 
 

@@ -1,50 +1,43 @@
-import fs from 'fs'
-import puppeteer from 'puppeteer'
-
+import fs from "fs";
+import puppeteer from "puppeteer";
 
 // Obtenemos el numero total de paginas de cada modelo
-async function getAllData(){
-    const browser =  await puppeteer.launch({
-        headless:false,
-      })
+async function getAllData() {
+  const browser = await puppeteer.launch({
+    headless: false,
+  });
+
+  const outerArray = [];
+  // New instance of BROWSER (not the current in use)
+  const page = await browser.newPage();
+ 
+  for (let i = 1; i < 300; i++) {
+    await page.goto(`https://www.twpornstars.com/?page=${i}`);
 
 
-    // New instance of BROWSER (not the current in use)
-    const page = await browser.newPage()
-    const read = fs.readFileSync('./flat-links-1.json')
-    const parseData = await JSON.parse(read)
-    for(let i = 0; i < 300; i++){
-       
-            await page.goto(parseData[i].url) 
+    const results = await page.evaluate(() => {
+      const list = document.querySelectorAll(".thumb__model_link a");
+      const data = [...list].map(li => {
+        const name = li.innerText;
+        return name;
+      });
+      return data;
+    });
 
-            const results = await page.evaluate(()=>{
-            const innerArray = []   // Array de paginas 
-            const list = document.querySelectorAll('.pagination li')
-            const data = [...list].map((li,index, arr)=>{
+    outerArray.push(results)
 
-            if (index === arr.length - 2){
-              // Separamos el numero de paginas en el array  
-            innerArray.push(li.innerText) 
-          
-            }
+    // console.log(results);
+  }
+  const flatArray = outerArray.flat()
+  // console.log(outerArray.flat())
+  // Creamos el archivo
+   fs.writeFile('./models-name-1.json', JSON.stringify(flatArray), err =>{
+        if(err) throw new err
 
-        })
-        return innerArray[0]
+        console.log(`Data added`)
     })
-    // Creamos una nueva "key" en el objeto del JSON
-    parseData[i].pages = results
-    // Creamos el archivo
-    fs.writeFile('./links-1-info.json', JSON.stringify(parseData), err =>{
-        if(err) throw new `The ${err} is on the index ${i}`
 
-        console.log(`Data added on main index ${i}`)
-    })
-        
-    }
-   
-    
-    
-    await browser.close()
+  await browser.close();
 }
 
-getAllData()
+getAllData();
