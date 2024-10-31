@@ -11,17 +11,19 @@ async function getAllData() {
   // New instance of BROWSER (not the current in use)
   const page = await browser.newPage();
  
-  for (let i = 1; i < 300; i++) {
+  for (let i = 1; i < 2; i++) {
     await page.goto(`https://www.twpornstars.com/?page=${i}`);
 
 
     const results = await page.evaluate(() => {
-      const list = document.querySelectorAll(".thumb__img");
-      const data = [...list].map(li => {
-        // const name = li.innerText; // Model name 
-        // return name; 
-        const thumb = li.getAttribute('src')
-        return thumb
+      const listThumb = document.querySelectorAll(".thumb__img");
+      const listNameUrl = document.querySelectorAll(".thumb__model_link a");
+      
+      const data = [...listThumb].map((li,index, arr) => {
+        const url = [...listNameUrl][index].getAttribute('href'); // Model URL
+        const name = [...listNameUrl][index].innerText; // Model name 
+        const thumb = li.getAttribute('src') // Model Thumb image
+        return {id:index,url:url,name: name, thumb: thumb}
       });
       return data;
     });
@@ -33,7 +35,7 @@ async function getAllData() {
   const flatArray = outerArray.flat()
   // console.log(outerArray.flat())
   // Creamos el archivo
-   fs.writeFile('./models-thumb-1.json', JSON.stringify(flatArray), err =>{
+   fs.writeFile('./testing-json.json', JSON.stringify(flatArray), err =>{
         if(err) throw new err
 
         console.log(`Data added`)
