@@ -56,12 +56,12 @@ async function getDataInfo() {
   // New instance of BROWSER (not the current in use)
   const page = await browser.newPage();
 
-  const readAllData = fs.readFileSync('./all-data-1.json')
+  const readAllData = fs.readFileSync('./full-data.json')
   const parseData = JSON.parse(readAllData)
   parseData.map(async (item)=>{
-      await page.goto(item.url)
+      await page.goto(`${item.url}?page=`)
       const results = page.evaluate(()=>{
-        
+         
       })
   })
   console.log(parseData)
