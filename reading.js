@@ -53,6 +53,7 @@ await browser.close()
 
 
 // Obtenemos el numero total de paginas de cada modelo
+// Creamos una nueva key en el archivos JSON para tener toda la data necesaria
 async function getAllList(){
     const browser =  await puppeteer.launch({
         headless:false,
@@ -61,34 +62,29 @@ async function getAllList(){
     const outerArray = []
     // New instance of BROWSER (not the current in use)
     const page = await browser.newPage()
-    const read = fs.readFileSync('./flat-links-1.json')
+    const read = fs.readFileSync('./all-data-1.json')
     const parseData = await JSON.parse(read)
-    for(let i = 0; i < 600; i++){
+    for(let i = 0; i < parseData.length; i++){
        
             await page.goto(parseData[i].url) 
 
             const results = await page.evaluate(()=>{
-            const innerArray = []   // Array de paginas 
             const list =  document.querySelectorAll('.pagination li')
             const data = [...list].map((li,index, arr)=>{
 
             if (index === arr.length - 2){
               // Separamos el numero de paginas en el array  
-              innerArray.push(li.innerText) 
+              return li.innerText
           
             }
 
         })
-        return innerArray[0]
+        return data
     })
-    // Creamos una nueva "key" en el objeto del JSON
-    // parseData[i].pages = results
-    // Creamos el archivo
-    
-    outerArray.push(results)    
+     parseData[i].pages = parseInt(results.slice(-2,-1))
     }
      
-    fs.writeFile('./links-1-pages.json', JSON.stringify(outerArray), err =>{
+   fs.writeFile('./full-data.json', JSON.stringify(parseData), err =>{
         if(err) throw new err
 
         console.log(`Data page added`)
