@@ -105,7 +105,7 @@ async function complementThumbs() {
   const page = await browser.newPage();
   const read = fs.readFileSync("./full-data.json")
   const parseData = await JSON.parse(read);
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < parseData.length; i++) {
     await page.goto(parseData[i].url);
     const results = await page.evaluate(() => {
       
@@ -118,9 +118,10 @@ async function complementThumbs() {
       });
       return data;
     });
-    parseData[i].pages = parseInt(results.page.slice(-2, -1));
+    parseData[i].thumbs = results;
   }
-  fs.writeFile("./full-data.json", JSON.stringify(parseData), (err) => {
+ 
+  fs.writeFile("./full-data-filled.json", JSON.stringify(parseData), (err) => {
     if (err) throw new err();
 
     console.log(`Data page added`);
@@ -129,3 +130,4 @@ async function complementThumbs() {
 
   await browser.close();
 }
+complementThumbs()
