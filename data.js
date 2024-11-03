@@ -52,19 +52,36 @@ async function getDataInfo() {
     headless: false,
   });
 
- 
+  const outerArray = []
   // New instance of BROWSER (not the current in use)
   const page = await browser.newPage();
 
-  const readAllData = fs.readFileSync('./full-data.json')
+  const readAllData = fs.readFileSync('./short-data.json')
   const parseData = JSON.parse(readAllData)
-  parseData.map(async (item)=>{
-      await page.goto(`${item.url}?page=`)
-      const results = page.evaluate(()=>{
-         
+
+
+  for (let y = 0; y < parseData.length; y++){
+   const name = parseData[y].name
+   const innerArray = []
+     for(let i= 1; i < parseInt(parseData[y].pages); i++) {
+      await page.goto(`${parseData[y].url}?page=${i}`)
+      const results = await page.evaluate(()=>{
+         const listThumbs = document.querySelectorAll('.thumb__img')
+         const data = [...listThumbs].map((li)=>{
+           const thumbs = li.getAttribute('src')
+           return thumbs
+         })
+         return data
       })
-  })
-  console.log(parseData)
+      innerArray.push(results)
+    }
+ outerArray.push(innerArray)
+}
+ console.log(outerArray) 
+ await browser.close();
 }
 
 getDataInfo()
+
+// Example Small Thumb: https://pbs.twimg.com/media/FMy80a2WUA4fkYk.jpg:small
+// Example Large Thumb: https://pbs.twimg.com/media/FMy80a2WUA4fkYk.jpg:large
