@@ -1,0 +1,22 @@
+export const tagData = [
+    "Fucked",
+    "Only-Fans",
+    "Twitter",
+    "Instagram",
+    "Bitches",
+    "Blow-job",
+    "Milf",
+    "Boobs",
+    "Anal",
+    "Creampy",
+    "Teen",
+    "Hentai",
+    "Nudes",
+    "Fansly",
+    "Patreon",
+    "Babe",
+    "Twitch",
+    "Fuck",
+    "Horny",
+    "Porn Cams"
+]
