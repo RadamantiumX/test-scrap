@@ -8,7 +8,7 @@ import { helper } from "./helper.js";
 async function handleDynamicWebPage() {
   try {
     const browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
     });
     // New instance of BROWSER (not the current in use)
     const page = await browser.newPage();
