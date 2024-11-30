@@ -31,7 +31,7 @@ async function handleDynamicWebPage() {
   }
 }
 
-handleDynamicWebPage()
+// handleDynamicWebPage()
 
 // selector images: .thumb__img
 // selector anchor: .thumb__link
