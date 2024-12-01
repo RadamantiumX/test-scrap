@@ -41,14 +41,14 @@ export async function loadAttributes (currentPage, element) {
 
       
       for(let i = 0; i < [...elements].length;i++){
-       
+       let innerText = [...elements][i]
        let nodeMap = [...elements][i].attributes
        const attributes = {};
         for(let y = 0; y < nodeMap.length; y++){
              // Extract all attributes into an object
             
              attributes[nodeMap[y].name] = nodeMap[y].value
-            
+             attributes['inner_html'] = innerText.innerHTML
         }
         arrayElement.push(attributes) 
       }
@@ -59,7 +59,7 @@ export async function loadAttributes (currentPage, element) {
       
     }, selector);
   };
-
+/*
   const getSingleElementAttributes = async () => {
     return await page.evaluate((sel) => {
       const arrayElement = []
@@ -82,7 +82,7 @@ export async function loadAttributes (currentPage, element) {
       return arrayElement
     }, selector);
   }
-
+*/
   // Example usage
   const attributes = await getAllElementsAttributes(element); // Replace 'h1' with the desired selector
   const results_length = attributes.length
