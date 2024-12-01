@@ -36,7 +36,7 @@ const rl = readline.createInterface({
      
       if (values.length >= 1) {
         values.push(input);
-        loadAttributes(values[0], values[1])
+        loadAttributes(values[0], values[1],'single')
         rl.close();
       } else {
         values.push(input); // Add input to the array

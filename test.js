@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import colors from 'ansi-colors'
 import readline from 'readline'
 
-export async function test(reqPage, tag) {
+export async function test(reqPage, tag, usage) {
      
      console.log(colors.bgGreen('Loading...'))
     
@@ -24,7 +24,7 @@ export async function test(reqPage, tag) {
 
 // test(`https://www.twpornstars.com`, 'img')
 
-export async function loadAttributes (currentPage, element) {
+export async function loadAttributes (currentPage, element, usage) {
   console.log(colors.bgBlue('Loading...'))
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
@@ -83,14 +83,25 @@ export async function loadAttributes (currentPage, element) {
 
   // Example usage
 
+  if(usage.includes('all')){
+      // All data element //
+     const all_data_element = await getAllElementsAttributes(element); // Replace 'h1' with the desired selector
+     const results_length = attributes.length
+     console.log({all_data_element,results_length});
   // All data element //
-  const all_data_element = await getAllElementsAttributes(element); // Replace 'h1' with the desired selector
-  const results_length = attributes.length
-  console.log({all_data_element,results_length});
-  // All data element //
+     console.log((colors.bgGreen('Done! 😊')))
+    await browser.close();
+  }else{
+    // Single Element //
+    const single_data_element = await getAllSingleAttributes(element);
+    console.log({single_data_element})
+    console.log((colors.bgGreen('Done! 😊')))
+    await browser.close();
+    // Single Element //
+  }
+  
 
-  console.log((colors.bgGreen('Done! 😊')))
-  await browser.close();
+  
 }
 
 // loadAttributes()
