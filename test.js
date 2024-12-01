@@ -66,15 +66,13 @@ export async function loadAttributes (currentPage, element) {
       const element = document.querySelector(sel);
       if (!element) return null;
 
-      
-      
-       
        let nodeMap = element.attributes
        const attributes = {};
         for(let y = 0; y < nodeMap.length; y++){
              // Extract all attributes into an object
             
              attributes[nodeMap[y].name] = nodeMap[y].value
+             attributes['inner_html'] = element.innerHTML
             
         }
         arrayElement.push(attributes) 
@@ -84,7 +82,7 @@ export async function loadAttributes (currentPage, element) {
   }
 
   // Example usage
-  
+
   // All data element //
   const all_data_element = await getAllElementsAttributes(element); // Replace 'h1' with the desired selector
   const results_length = attributes.length
