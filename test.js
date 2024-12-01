@@ -34,8 +34,9 @@ export async function loadAttributes (currentPage, element) {
   // Function to get all attributes of a specific element
   const getAllElementsAttributes = async (selector) => {
     return await page.evaluate((sel) => {
-      const arrayElement = []
-      const elements = document.querySelectorAll(sel);
+      try{
+        const arrayElement = [] 
+      const elements = document.querySelectorAll(sel); // Select all elements
       if (!elements) return null;
 
       
@@ -52,6 +53,10 @@ export async function loadAttributes (currentPage, element) {
         arrayElement.push(attributes) 
       }
       return arrayElement
+      }catch(error){
+        console.error('message',error)
+      }
+      
     }, selector);
   };
 
