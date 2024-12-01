@@ -15,25 +15,21 @@ export async function test(reqPage, tag) {
       await page.goto(reqPage);
       const elementHandle = await page.$$(tag)
       
-      const text  = await Promise.all(elementHandle.map(el=> el.evaluate(node => (node)// Pass the input to a function
+      const text  = await Promise.all(elementHandle.map(el=> el.evaluate(node => ( node.attributes[index].name ) // Pass the input to a function
     )))
-     text.map((item)=>{
-       
-       for(let i = 0;i < item.attributes.length ;i++){
-          console.log(item.attributes[i].value)
-       }
-     })
+     console.log(text)
       console.log((colors.bgGreen('Done! 😊')))
       await browser.close();
 }
 
 // test(`https://www.twpornstars.com`, 'img')
 
-async function loadAttributes () {
+export async function loadAttributes (currentPage, element) {
+  console.log(colors.bgBlue('Loading...'))
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  await page.goto('https://www.twpornstars.com'); // Replace with your target URL
+  await page.goto(currentPage); // Replace with your target URL
 
   // Function to get all attributes of a specific element
   const getAllAttributes = async (selector) => {
@@ -42,24 +38,28 @@ async function loadAttributes () {
       const elements = document.querySelectorAll(sel);
       if (!elements) return null;
 
-      // Extract all attributes into an object
-      const attributes = {};
+      
       for(let i = 0; i < [...elements].length;i++){
-        for (const attr of [...elements][i].attributes) {
-        attributes[attr.name] = attr.value;
-         arrayElement.push(attributes)
-      }
-     
+       
+       let nodeMap = [...elements][i].attributes
+       const attributes = {};
+        for(let y = 0; y < nodeMap.length; y++){
+             // Extract all attributes into an object
+            
+             attributes[nodeMap[y].name] = nodeMap[y].value
+            
+        }
+        arrayElement.push(attributes) 
       }
       return arrayElement
-     // return attributes;
     }, selector);
   };
 
   // Example usage
-  const attributes = await getAllAttributes('.thumb__img'); // Replace 'h1' with the desired selector
-  console.log(attributes);
-
+  const attributes = await getAllAttributes(element); // Replace 'h1' with the desired selector
+  const results_length = attributes.length
+  console.log({attributes,results_length});
+  console.log((colors.bgGreen('Done! 😊')))
   await browser.close();
 }
 

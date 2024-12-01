@@ -1,6 +1,6 @@
 import readline from 'readline'
 import colors from 'ansi-colors'
-import { test } from './test.js';
+import { test, loadAttributes } from './test.js';
 
 ///////////////////////////////////////////////////////////////////////////////////
   
@@ -19,6 +19,8 @@ import { test } from './test.js';
   
 // userValue()
 
+
+////////////////////////// Current function to production ///////////////////////////////////
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -26,7 +28,7 @@ const rl = readline.createInterface({
   
   let values = []; // Array to store the values
   
-  function askForValue(param = 'url') {
+  function askForValue(param = 'url') { // Pre-initialized "param" ---> next change
 
    // console.log('🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐', colors.red('Scrap To JSON') ,'🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐')
 
@@ -34,7 +36,7 @@ const rl = readline.createInterface({
      
       if (values.length >= 1) {
         values.push(input);
-        test(values[0], values[1])
+        loadAttributes(values[0], values[1])
         rl.close();
       } else {
         values.push(input); // Add input to the array
@@ -49,3 +51,5 @@ const rl = readline.createInterface({
   
   
   askForValue();
+
+  ////////////////////////// Current function to production ///////////////////////////////////
