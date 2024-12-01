@@ -28,7 +28,7 @@ const rl = readline.createInterface({
   
   let values = []; // Array to store the values
   
-  function askForValue(param = 'url') { // Pre-initialized "param" ---> next change
+  async function askForValue(param = 'url') { // Pre-initialized "param" ---> next change
 
    // console.log('🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐', colors.red('Scrap To JSON') ,'🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐🌐')
 
