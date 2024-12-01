@@ -59,17 +59,17 @@ export async function loadAttributes (currentPage, element) {
       
     }, selector);
   };
-/*
+
   const getSingleElementAttributes = async () => {
     return await page.evaluate((sel) => {
       const arrayElement = []
-      const elements = document.querySelectorAll(sel);
-      if (!elements) return null;
+      const element = document.querySelector(sel);
+      if (!element) return null;
 
       
-      for(let i = 0; i < [...elements].length;i++){
+      
        
-       let nodeMap = [...elements][i].attributes
+       let nodeMap = element.attributes
        const attributes = {};
         for(let y = 0; y < nodeMap.length; y++){
              // Extract all attributes into an object
@@ -78,15 +78,19 @@ export async function loadAttributes (currentPage, element) {
             
         }
         arrayElement.push(attributes) 
-      }
+      
       return arrayElement
     }, selector);
   }
-*/
+
   // Example usage
-  const attributes = await getAllElementsAttributes(element); // Replace 'h1' with the desired selector
+  
+  // All data element //
+  const all_data_element = await getAllElementsAttributes(element); // Replace 'h1' with the desired selector
   const results_length = attributes.length
-  console.log({attributes,results_length});
+  console.log({all_data_element,results_length});
+  // All data element //
+
   console.log((colors.bgGreen('Done! 😊')))
   await browser.close();
 }
