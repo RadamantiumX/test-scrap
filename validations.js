@@ -1,9 +1,10 @@
 import zod from 'zod'
 import { ATTRIBUTES } from './constant.js'
 
+const notValidCharacters = '/.,;:{}"" '
 
 const attrSchema = zod.object({
-    attr: zod.string().refine((s)=> ATTRIBUTES.includes(s.toString()), 'Incorrect attribute')
+    attr: zod.string().refine((s)=> !s.includes('/.,;:{}"" '), 'Incorrect attribute')
 })
 
 export function validateAttribute(input) {

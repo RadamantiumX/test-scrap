@@ -1,4 +1,4 @@
-
+import readline from 'readline'
 
 
 
@@ -223,4 +223,16 @@ export async function helper() {
   } catch (error) {
     console.error(error)
   }
+}
+
+
+export function readlineConsole(params) {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  
+  let values = []; // Array to store the values
+
+  return {rl, values}
 }

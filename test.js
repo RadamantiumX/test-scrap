@@ -1,6 +1,6 @@
 import puppeteer from "puppeteer";
 import colors from 'ansi-colors'
-import readline from 'readline'
+import fs from 'fs'
 
 export async function test(reqPage, tag, usage) {
      
@@ -24,12 +24,12 @@ export async function test(reqPage, tag, usage) {
 
 // test(`https://www.twpornstars.com`, 'img')
 
-export async function loadAttributes (currentPage, element, usage) {
+export async function loadAttributes (currentWebPage, element, usage,jsonName) {
   console.log(colors.bgBlue('Loading...'))
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  await page.goto(currentPage); // Replace with your target URL
+  await page.goto(currentWebPage); // Replace with your target URL
 
   // Function to get all attributes of a specific element
   const getAllElementsAttributes = async (selector) => {
@@ -60,9 +60,10 @@ export async function loadAttributes (currentPage, element, usage) {
     }, selector);
   };
 
-  const getSingleElementAttributes = async () => {
+  const getSingleElementAttributes = async (selector) => {
     return await page.evaluate((sel) => {
-      const arrayElement = []
+      try{
+         const arrayElement = []
       const element = document.querySelector(sel);
       if (!element) return null;
 
@@ -78,6 +79,10 @@ export async function loadAttributes (currentPage, element, usage) {
         arrayElement.push(attributes) 
       
       return arrayElement
+      }catch(error){
+         console.error(error)
+      }
+      
     }, selector);
   }
 
@@ -86,15 +91,25 @@ export async function loadAttributes (currentPage, element, usage) {
   if(usage.includes('all')){
       // All data element //
      const all_data_element = await getAllElementsAttributes(element); // Replace 'h1' with the desired selector
-     const results_length = attributes.length
-     console.log({all_data_element,results_length});
+     const results_length = all_data_element.length
+   //  console.log({all_data_element,results_length});
   // All data element //
+  fs.writeFile(`${jsonName}.json`, JSON.stringify({all_data_element,results_length}), err =>{
+    if(err) throw new err
+
+    console.log(colors.bgBlueBright(`${jsonName}.json has been created!`))
+   })
      console.log((colors.bgGreen('Done! 😊')))
     await browser.close();
   }else{
     // Single Element //
-    const single_data_element = await getAllSingleAttributes(element);
-    console.log({single_data_element})
+    const single_data_element = await getSingleElementAttributes(element);
+    // console.log({single_data_element})
+    fs.writeFile(`${jsonName}.json`, JSON.stringify(single_data_element), err =>{
+      if(err) throw new err
+  
+      console.log(colors.bgBlueBright(`${jsonName}.json has been created!`))
+     })
     console.log((colors.bgGreen('Done! 😊')))
     await browser.close();
     // Single Element //
@@ -104,4 +119,3 @@ export async function loadAttributes (currentPage, element, usage) {
   
 }
 
-// loadAttributes()
